@@ -51,7 +51,7 @@ var parseJSON = function(json) {
           if (escapeChar[character]) {
             result+=escapeChar[character];
           } else if (character==='u') {
-            result+=json.slice(index-2,6);
+            result+=json.slice(index-2,index+4);
             next(4);
           } else {
             result+=character;
@@ -152,14 +152,26 @@ var parseJSON = function(json) {
 
   function parseNullAndBoolean() {
     if (character==='n') {
-      next(4);
-      return null;
-    } else if (character==='t') {
-      next(4);
-      return true;
+      if (json.slice(index-1,index+3)==='null') {
+        next(4);
+        return null;
+      } else {
+        throw new SyntaxError(`Error parsing null at ${index-1}`);
+      }
+    } else if (character==='t') {    
+      if (json.slice(index-1,index+3)==='true') {
+        next(4);
+        return true;
+      } else {
+        throw new SyntaxError(`Error parsing boolean at ${index-1}`);
+      }
     } else if (character==='f') {
-      next(5);
-      return false;
+      if (json.slice(index-1,index+4)==='false') {
+        next(5);
+        return false;
+      } else {
+        throw new SyntaxError(`Error parsing boolean at ${index-1}`);
+      }
     } else {
       throw new SyntaxError(`Error parsing null or boolean at ${index-1}`);
     }
