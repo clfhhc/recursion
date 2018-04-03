@@ -18,8 +18,8 @@ describe('getElementsByClassName', function() {
 
       var result = getElementsByClassName('targetClassName');
       var expectedNodeList = document.getElementsByClassName('targetClassName');
-      var expectedArray = Array.prototype.slice.apply(expectedNodeList);
-      var equality = _.isEqual(result, expectedArray); // why can't we use `===` here?
+      var expectedArray = Array.prototype.slice.apply(expectedNodeList);  //This copies the HTMLCollection and convert it to an array
+      var equality = _.isEqual(result, expectedArray); // why can't we use `===` here? They are of different arrays
       expect(equality).to.equal(true);
 
       $rootElement.remove();
