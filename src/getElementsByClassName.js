@@ -21,6 +21,7 @@
 };
 */
 
+/*
 var getElementsByClassName = function(className
 ) {
   // your code here
@@ -38,4 +39,19 @@ var getElementsByClassName = function(className
   };
   var htmlElement=document.body;
   return getElementsByClassNameInHtmlCollection(htmlElement,className);
+};
+*/
+
+var getElementsByClassName = function(className,node) {
+  // your code here
+  var targetNode=[];
+  node = node || document.body;
+
+  node.classList.contains(className) && targetNode.push(node);
+
+  for (let i=0;i<node.children.length;i++) {
+    targetNode=targetNode.concat(getElementsByClassName(className,node.children[i]));
+  }
+
+  return targetNode;
 };
